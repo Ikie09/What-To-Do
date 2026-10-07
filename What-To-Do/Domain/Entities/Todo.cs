@@ -14,24 +14,28 @@ public class Todo
     public int? CategoryId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CompletedAt { get; set; }
     public string UserId { get; set; } = string.Empty;
     public AppUser? User { get; set; }
     public Category? Category { get; set; }
     public bool IsDeleted { get; set; } = false;
 
     // Status and IsCompleted must never disagree: Done <=> IsCompleted.
-    public void SetStatus(TodoStatus status)
+    // CompletedAt is stamped the first time a todo becomes Done (a client may supply the real time
+    // for work finished offline) and cleared when it is reopened.
+    public void SetStatus(TodoStatus status, DateTime? completedAt = null)
     {
         Status = status;
         IsCompleted = status == TodoStatus.Done;
+        CompletedAt = IsCompleted ? CompletedAt ?? completedAt ?? DateTime.UtcNow : null;
     }
 
     // Accepts a status name from a client; falls back to the legacy IsCompleted flag.
-    public void SetStatusFrom(string? statusName, bool isCompleted)
+    public void SetStatusFrom(string? statusName, bool isCompleted, DateTime? completedAt = null)
     {
         if (!string.IsNullOrEmpty(statusName) && Enum.TryParse<TodoStatus>(statusName, out var parsed))
-            SetStatus(parsed);
+            SetStatus(parsed, completedAt);
         else
-            SetStatus(isCompleted ? TodoStatus.Done : TodoStatus.Todo);
+            SetStatus(isCompleted ? TodoStatus.Done : TodoStatus.Todo, completedAt);
     }
 }

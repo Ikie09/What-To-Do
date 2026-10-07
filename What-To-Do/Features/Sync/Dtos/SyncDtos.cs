@@ -6,6 +6,8 @@ public class SyncResponse
     public IEnumerable<CategorySyncDto> Categories { get; set; } = Enumerable.Empty<CategorySyncDto>();
     public IEnumerable<NoteSyncDto> Notes { get; set; } = Enumerable.Empty<NoteSyncDto>();
     public IEnumerable<MeetingSyncDto> Meetings { get; set; } = Enumerable.Empty<MeetingSyncDto>();
+    public IEnumerable<TransactionSyncDto> Transactions { get; set; } = Enumerable.Empty<TransactionSyncDto>();
+    public IEnumerable<BudgetSyncDto> Budgets { get; set; } = Enumerable.Empty<BudgetSyncDto>();
 }
 public class TodoSyncDto
 {
@@ -18,8 +20,9 @@ public class TodoSyncDto
     public string Priority { get; set; } = string.Empty;
     public DateTime? DueDate { get; set; }
     public int? CategoryId { get; set; }
+    public DateTime? CompletedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public bool IsDeleted { get; set; }   
+    public bool IsDeleted { get; set; }
 }
 
 public class CategorySyncDto
@@ -40,6 +43,27 @@ public class MeetingSyncDto
     public DateTime StartsAt { get; set; }
     public DateTime EndsAt { get; set; }
     public string? MeetingNotes { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsDeleted { get; set; }
+}
+
+public class TransactionSyncDto
+{
+    public int Id { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public decimal Amount { get; set; }
+    public string Category { get; set; } = string.Empty;
+    public string? Note { get; set; }
+    public DateTime Date { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsDeleted { get; set; }
+}
+
+public class BudgetSyncDto
+{
+    public int Id { get; set; }
+    public string Category { get; set; } = string.Empty;
+    public decimal MonthlyLimit { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }
 }

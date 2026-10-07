@@ -11,6 +11,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Note> Notes => Set<Note>();
     public DbSet<Meeting> Meetings => Set<Meeting>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<Budget> Budgets => Set<Budget>();
+    public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
+    public DbSet<SentPushReminder> SentPushReminders => Set<SentPushReminder>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -235,7 +235,8 @@ public class TodosController : ControllerBase
         CategoryName = t.Category?.Name,
         CategoryColor = t.Category?.Color,
         CreatedAt = t.CreatedAt,
-        UpdatedAt = t.UpdatedAt
+        UpdatedAt = t.UpdatedAt,
+        CompletedAt = t.CompletedAt
     };
 
 }

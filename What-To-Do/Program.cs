@@ -1,5 +1,13 @@
 using What_To_Do.Common.Json;
 using What_To_Do.Extensions;
+using What_To_Do.Features.Push;
+
+// `dotnet run -- --generate-vapid-keys` prints a fresh key pair for Web Push and exits.
+if (args.Contains("--generate-vapid-keys"))
+{
+    VapidKeyTool.PrintNewKeys();
+    return;
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +23,8 @@ builder.Services.AddControllers()
 builder.Services
     .AddAppDatabase(builder.Configuration)
     .AddAppAuthentication(builder.Configuration)
+    .AddAppPush(builder.Configuration)
+    .AddAppTranscription(builder.Configuration)
     .AddWebAppCors()
     .AddAppSwagger();
 

@@ -7,11 +7,33 @@ using Microsoft.OpenApi.Models;
 using What_To_Do.Data;
 using What_To_Do.Domain.Entities;
 using What_To_Do.Features.Auth;
+using What_To_Do.Features.Push;
+using What_To_Do.Features.Transcriptions;
 
 namespace What_To_Do.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    // Web Push: subscription endpoints + the background service that sends due-todo/meeting reminders.
+    public static IServiceCollection AddAppPush(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<PushOptions>(config.GetSection("Push"));
+        services.AddSingleton(TimeProvider.System);
+        services.AddSingleton<PushSender>();
+        services.AddHostedService<ReminderService>();
+        return services;
+    }
+
+    // Local speech-to-text (Whisper): upload endpoint, in-memory job queue and the single CPU worker.
+    public static IServiceCollection AddAppTranscription(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<TranscriptionOptions>(config.GetSection("Transcription"));
+        services.AddSingleton<TranscriptionQueue>();
+        services.AddSingleton<WhisperModelService>();
+        services.AddHostedService<TranscriptionWorker>();
+        return services;
+    }
+
     public static IServiceCollection AddAppDatabase(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<AppDbContext>(options =>
@@ -68,6 +90,7 @@ public static class ServiceCollectionExtensions
             {
                 policy.WithOrigins(
                         "http://localhost:5173",
+                        "http://localhost:4173",   // vite preview (the production build, where the service worker runs)
                         "http://localhost:3000",
                         "http://localhost:8080")
                       .AllowAnyHeader()

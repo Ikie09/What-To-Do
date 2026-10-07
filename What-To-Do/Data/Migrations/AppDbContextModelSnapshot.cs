@@ -226,6 +226,46 @@ namespace What_To_Do.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("What_To_Do.Domain.Entities.Budget", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MonthlyLimit")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Budgets");
+                });
+
             modelBuilder.Entity("What_To_Do.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -263,7 +303,7 @@ namespace What_To_Do.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -273,7 +313,7 @@ namespace What_To_Do.Data.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             Name = "Work",
-                            UpdatedAt = new DateTime(2026, 10, 5, 5, 17, 51, 93, DateTimeKind.Utc).AddTicks(1241)
+                            UpdatedAt = new DateTime(2026, 10, 5, 6, 55, 10, 170, DateTimeKind.Utc).AddTicks(1087)
                         },
                         new
                         {
@@ -282,7 +322,7 @@ namespace What_To_Do.Data.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             Name = "Personal",
-                            UpdatedAt = new DateTime(2026, 10, 5, 5, 17, 51, 93, DateTimeKind.Utc).AddTicks(1249)
+                            UpdatedAt = new DateTime(2026, 10, 5, 6, 55, 10, 170, DateTimeKind.Utc).AddTicks(1094)
                         },
                         new
                         {
@@ -291,7 +331,7 @@ namespace What_To_Do.Data.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             Name = "Shopping",
-                            UpdatedAt = new DateTime(2026, 10, 5, 5, 17, 51, 93, DateTimeKind.Utc).AddTicks(1252)
+                            UpdatedAt = new DateTime(2026, 10, 5, 6, 55, 10, 170, DateTimeKind.Utc).AddTicks(1095)
                         },
                         new
                         {
@@ -300,7 +340,7 @@ namespace What_To_Do.Data.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             Name = "Health",
-                            UpdatedAt = new DateTime(2026, 10, 5, 5, 17, 51, 93, DateTimeKind.Utc).AddTicks(1254)
+                            UpdatedAt = new DateTime(2026, 10, 5, 6, 55, 10, 170, DateTimeKind.Utc).AddTicks(1097)
                         });
                 });
 
@@ -353,7 +393,7 @@ namespace What_To_Do.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("What_To_Do.Domain.Entities.Note", b =>
@@ -392,7 +432,98 @@ namespace What_To_Do.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("What_To_Do.Domain.Entities.PushSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Auth")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("EndpointHash")
+                        .IsRequired()
+                        .HasColumnType("char(64)");
+
+                    b.Property<int>("FailureCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeadMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("P256dh")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TimeZone")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EndpointHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PushSubscriptions");
+                });
+
+            modelBuilder.Entity("What_To_Do.Domain.Entities.SentPushReminder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime>("SentAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SentAt");
+
+                    b.HasIndex("SubscriptionId", "Key")
+                        .IsUnique();
+
+                    b.ToTable("SentPushReminders");
                 });
 
             modelBuilder.Entity("What_To_Do.Domain.Entities.Todo", b =>
@@ -405,6 +536,9 @@ namespace What_To_Do.Data.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -457,7 +591,59 @@ namespace What_To_Do.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Todos", (string)null);
+                    b.ToTable("Todos");
+                });
+
+            modelBuilder.Entity("What_To_Do.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Date");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -511,6 +697,16 @@ namespace What_To_Do.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("What_To_Do.Domain.Entities.Budget", b =>
+                {
+                    b.HasOne("What_To_Do.Domain.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("What_To_Do.Domain.Entities.Category", b =>
                 {
                     b.HasOne("What_To_Do.Domain.Entities.AppUser", "User")
@@ -541,6 +737,27 @@ namespace What_To_Do.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("What_To_Do.Domain.Entities.PushSubscription", b =>
+                {
+                    b.HasOne("What_To_Do.Domain.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("What_To_Do.Domain.Entities.SentPushReminder", b =>
+                {
+                    b.HasOne("What_To_Do.Domain.Entities.PushSubscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
+                });
+
             modelBuilder.Entity("What_To_Do.Domain.Entities.Todo", b =>
                 {
                     b.HasOne("What_To_Do.Domain.Entities.Category", "Category")
@@ -554,6 +771,16 @@ namespace What_To_Do.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("What_To_Do.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("What_To_Do.Domain.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
